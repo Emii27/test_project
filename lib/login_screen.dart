@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:test_project/roaming_screen.dart';
 
-import 'TileButton.dart';
+import 'animal.dart';
+import 'tile_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,9 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
               spacing: 8.0,
               mainAxisAlignment: .center,
               children: [
-                TileButton(animal: .dog, onTap: () => _onButtonTap(.dog)),
-                TileButton(animal: .cat, onTap: () => _onButtonTap(.cat)),
-                TileButton(animal: .duck, onTap: () => _onButtonTap(.duck)),
+                TileButton(animal: .dog, onTap: () => _onAnimalButtonTap(.dog)),
+                TileButton(animal: .cat, onTap: () => _onAnimalButtonTap(.cat)),
+                TileButton(animal: .duck, onTap: () => _onAnimalButtonTap(.duck)),
               ],
             ),
             SizedBox(height: 8.0),
@@ -66,23 +70,32 @@ class _LoginScreenState extends State<LoginScreen> {
               spacing: 8.0,
               mainAxisAlignment: .center,
               children: [
-                TileButton(animal: .pig, onTap: () => _onButtonTap(.pig)),
-                TileButton(animal: .cow, onTap: () => _onButtonTap(.cow)),
+                TileButton(animal: .pig, onTap: () => _onAnimalButtonTap(.pig)),
+                TileButton(animal: .cow, onTap: () => _onAnimalButtonTap(.cow)),
                 TileButton(
                   animal: .rooster,
-                  onTap: () => _onButtonTap(.rooster),
+                  onTap: () => _onAnimalButtonTap(.rooster),
+                ),
+              ],
+            ), SizedBox(height: 8.0),
+            Row(
+              spacing: 8.0,
+              mainAxisAlignment: .center,
+              children: [
+                TileButton(animal: .horse, onTap: () => _onAnimalButtonTap(.horse)),
+                TileButton(animal: .sheep, onTap: () => _onAnimalButtonTap(.sheep)),
+                IconButton(
+                  onPressed: _resetCounter,
+                  icon: Icon(Icons.close),
+                  iconSize: 96.0,
                 ),
               ],
             ),
             SizedBox(height: 16.0),
-            IconButton(
-              onPressed: _resetCounter,
-              icon: Icon(Icons.close),
-              iconSize: 48.0,
-            ),
+
             Spacer(),
             FilledButton(
-              onPressed: _resetCounter,
+              onPressed: _onLogin,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -99,10 +112,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _onButtonTap(Animal animal) async {
+  void _onAnimalButtonTap(Animal animal) async {
+    // Counter
     _incrementCounter();
 
-    await player.setAsset('assets/audio/${animal.name}.mp3');
+    // Sound
+    _playAnimalSound(animal.name);
+  }
+  
+  void _onLogin() {
+    // if(counter >= 6) {
+    //   Navigator.push(context, MaterialPageRoute(builder: (context) => RoamingScreen()));
+    // }
+    _resetCounter();
+    
+  }
+
+  void _playAnimalSound(String animal) async {
+    final index = Random().nextInt(2) + 1;
+
+    await player.setAsset('assets/audio/$animal-$index.mp3');
     await player.play();
     await player.stop();
   }

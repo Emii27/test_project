@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'animal.dart';
+
 class TileButton extends StatelessWidget {
   final Animal animal;
   final VoidCallback onTap;
@@ -25,13 +27,4 @@ class TileButton extends StatelessWidget {
       ),
     );
   }
-}
-
-enum Animal {
-  cat,
-  cow,
-  dog,
-  duck,
-  pig,
-  rooster,
 }
